@@ -1,0 +1,17 @@
+{
+  "name": "site",
+  "dependencies": {
+    "requirejs": "^2.2.0",
+    "less": "^2.7.1",
+    "angular": "^1.5.7",
+    "reset-css": "^2.0.2011012603",
+    "fullcalendar": "^2.8.0",
+    "jquery": "^3.0.0",
+    "moment": "^2.13.0",
+    "angular-material": "^1.0.9",
+    "angular-aria": "^1.5.7",
+    "angular-animate": "^1.5.7",
+    "domReady": "^2.0.1",
+    "angular-resource": "^1.5.7"
+  }
+}

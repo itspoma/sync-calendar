@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+  <title></title>
+
+  <link rel="icon" type="image/x-icon" href="/favicon.png" />
+
+  <link rel="stylesheet" type="text/css" href="/vendor/reset-css/reset.css" />
+  <link rel="stylesheet" type="text/css" href="/vendor/fullcalendar/dist/fullcalendar.min.css" />
+  <link rel="stylesheet" type="text/css" href="/vendor/angular-material/angular-material.min.css" />
+  <link rel="stylesheet" type="text/less" href="/assets/styles/test.less" />
+
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link href="https://fonts.googleapis.com/icon?family=Lucida+Grande" rel="stylesheet">
+
+</head>
+<body ng-cloak>
+  <div ng-controller="pageCtrl">
+
+    <div ng-controller="calendarCtrl">
+      <div id="calendar"></div>
+    </div>
+
+  </div>
+
+  <script type="text/javascript">
+    WebFontConfig = {
+      google: { families: [ 'Lucida+Grande', 'HelveticaNeue', 'Helvetica+Neue', 'Open+Sans:400,300,500,600,700:latin,cyrillic', 'Raleway:400,100,200,300,500,700:latin', 'Poiret+One::latin,cyrillic', 'Yanone+Kaffeesatz:400,200,300:latin' ] }
+    };
+    (function() {
+      var wf = document.createElement('script');
+      wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+      wf.type = 'text/javascript';
+      wf.async = 'true';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(wf, s);
+    })(); </script>
+
+  <script src="/vendor/requirejs/require.js" data-main="/assets/main.js"></script>
+</body>
+</html>

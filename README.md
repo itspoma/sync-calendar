@@ -9,3 +9,10 @@ Research available calendars:
 - http://docs.dhtmlx.com/scheduler/samples/07_skins/13_flat.html
 - http://hourhq.com/?utm_medium=link&utm_source=booking-timekit-io&utm_campaign=bookingjs-redirect&utm_content=visit-hour
   - https://angular-material-calendar.bradb.net/fullscreen.html
+
+## To setup on local
+
+```bash
+$ npm install
+$ npm start
+```

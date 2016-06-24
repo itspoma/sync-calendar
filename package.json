@@ -1,0 +1,11 @@
+{
+  "name": "site",
+  "scripts": {
+    "start": "node node_modules/.bin/http-server src/web/",
+    "intall": "node node_modules/.bin/bower install"
+  },
+  "dependencies": {
+    "bower": "^1.7.9",
+    "http-server": "^0.9.0"
+  }
+}
