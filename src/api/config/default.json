@@ -1,0 +1,8 @@
+{
+  "environment": "default",
+
+  "http.port": "3000",
+
+  // mongo
+  "database_dsn": "mongodb://super:0GKUx6OnSzNBVofx@ds023064.mlab.com:23064/test-sync-calendar"
+}

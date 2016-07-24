@@ -4,6 +4,100 @@ body {
   font-size: 14px;
 }
 
+md-tabs.navigation-tabs {
+  background: rgba(33, 150, 243, 0.05);
+
+  md-tab-item.md-active {
+    background: rgba(33, 150, 243, 0.07);
+  }
+}
+
+md-autocomplete.search-input {
+  label {
+    font-size: 2rem;
+    top: -10px;
+    padding-left: 5px;
+  }
+  .md-input {
+    height: 60px;
+    line-height: 60px;
+    background-color: #fafafa;
+    font-size: 2.1rem;
+    padding-left: 5px;
+    margin-top: 3px;
+  }
+
+  .md-input-has-value,
+  .md-input-focused {
+    label{
+      font-size: 1rem;
+      top: -15px;
+    }
+  }
+}
+
 #calendar {
-  max-width: 800px;
+  // max-width: 100%;
+  width: 800px;
+
+  th.fc-day-header {
+    padding: 5px 1px;
+    font-weight: bold;
+  }
+
+  td.fc-day {
+    // background: red;
+  }
+
+  .fc-day-grid-event {
+    margin-left: 4px;
+    margin-right: 4px;
+    line-height: 1.5;
+    font-size: 0.9em;
+  }
+}
+
+.ruby {
+  background-color: red !important;
+  border-color: transparent;
+}
+.frontend {
+  background-color: #007eff !important;
+  border-color: transparent;
+}
+.tickets {
+  background-color: #b543a0 !important;
+  border-color: transparent;
+}
+
+md-dialog.md-dialog-fullscreen {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  border-radius: 0;
+}
+
+.hint {
+  position: absolute;
+  left: 2px;
+  right: auto;
+  bottom: 7px;
+  font-size: 12px;
+  line-height: 14px;
+  transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+  color: grey;
+
+  &.ng-hide,
+  &.ng-enter,
+  &.ng-leave.ng-leave-active {
+    bottom: 26px;
+    opacity: 0;
+  }
+
+  &.ng-leave,
+  &.ng-enter.ng-enter-active {
+    bottom: 7px;
+    opacity: 1;
+  }
 }

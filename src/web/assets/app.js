@@ -1,91 +1,64 @@
 define([
   'jquery',
   'angular',
+  'moment',
+  'components/calendar/calendarController',
   'ngMaterial',
   'ngResource',
-  'fullcalendar'
+  'fullcalendar',
+  'ngLoadingBar',
+  // 'ngContextMenu'
 ], function (
-  $, ng
+  $, angular, moment
 ) {
   'use strict';
 
   // init angular app
   var app = angular.module('app', [
     'ngMaterial',
-    'ngResource'
+    'ngResource',
+    // 'ui.bootstrap.contextMenu',
+    'angular-loading-bar',
+    'ngAnimate',
+    'calendar',
   ]);
 
-  //
-  app.controller('pageCtrl', function ($scope) {
-    $scope.aaa = 'test';
+  // config
+  app.config(function($mdDateLocaleProvider, $resourceProvider, $mdThemingProvider, cfpLoadingBarProvider) {
+    // don't strip trailing slashes from calculated URLs
+    $resourceProvider.defaults.stripTrailingSlashes = false;
+    
+    $mdThemingProvider.theme('default')
+      .primaryPalette('blue')
+      .accentPalette('blue')
+      .warnPalette('red');
+
+    cfpLoadingBarProvider.includeSpinner = false;
+
+    $mdDateLocaleProvider.formatDate = function(date) {
+      return moment(date).format('YYYY-MM-DD');
+    };
   });
 
-  app.controller('calendarCtrl', function ($scope) {
-    $('#calendar').fullCalendar({
-      header: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'month,basicWeek,basicDay'
-      },
-      defaultDate: '2016-06-12',
-      // editable: true,
-      // eventLimit: true, // allow "more" link when too many events
-      events: [
-        {
-          title: 'All Day Event',
-          start: '2016-06-01'
-        },
-        {
-          title: 'Long Event',
-          start: '2016-06-07',
-          end: '2016-06-10'
-        },
-        {
-          id: 999,
-          title: 'Repeating Event',
-          start: '2016-06-09T16:00:00'
-        },
-        {
-          id: 999,
-          title: 'Repeating Event',
-          start: '2016-06-16T16:00:00'
-        },
-        {
-          title: 'Conference',
-          start: '2016-06-11',
-          end: '2016-06-13'
-        },
-        {
-          title: 'Meeting',
-          start: '2016-06-12T10:30:00',
-          end: '2016-06-12T12:30:00'
-        },
-        {
-          title: 'Lunch',
-          start: '2016-06-12T12:00:00'
-        },
-        {
-          title: 'Meeting',
-          start: '2016-06-12T14:30:00'
-        },
-        {
-          title: 'Happy Hour',
-          start: '2016-06-12T17:30:00'
-        },
-        {
-          title: 'Dinner',
-          start: '2016-06-12T20:00:00'
-        },
-        {
-          title: 'Birthday Party',
-          start: '2016-06-13T07:00:00'
-        },
-        {
-          title: 'Click for Google',
-          url: 'http://google.com/',
-          start: '2016-06-28'
-        }
-      ]
+  //
+  app.controller('pageCtrl', function ($scope, $mdDialog, Events) {
+    // $scope.menuOptions = [
+    //   ['Select', function ($itemScope) {
+    //     // $scope.selected = $itemScope.item.name;
+    //   }],
+    //   null, // Dividier
+    //   ['Remove', function ($itemScope) {
+    //     // $scope.items.splice($itemScope.$index, 1);
+    //   }]
+    // ];
+  });
+
+  angular.module('app').factory('Events', function($resource) {
+    return $resource('http://127.0.0.1:3000/api/v1/events/:eventId', {
+      eventId: '@id'
+    }, {
+      'query': { method: 'GET', isArray: false },
+      'update': { method:'PUT' }
     });
   });
 

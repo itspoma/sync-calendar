@@ -12,7 +12,10 @@ Research available calendars:
 
 ## To setup on local
 
+https://github.com/olov/ng-annotate
 ```bash
 $ npm install
-$ npm start
+$ npm run web-server
+$ npm run api-server
+$ npm run api-server-dev
 ```

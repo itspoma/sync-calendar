@@ -14,23 +14,169 @@
   <link rel="stylesheet" type="text/css" href="/vendor/reset-css/reset.css" />
   <link rel="stylesheet" type="text/css" href="/vendor/fullcalendar/dist/fullcalendar.min.css" />
   <link rel="stylesheet" type="text/css" href="/vendor/angular-material/angular-material.min.css" />
+  <link rel="stylesheet" type="text/css" href="/vendor/angular-loading-bar/build/loading-bar.min.css" />
   <link rel="stylesheet" type="text/less" href="/assets/styles/test.less" />
 
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  
-  <link href="https://fonts.googleapis.com/icon?family=Lucida+Grande" rel="stylesheet">
+  <!-- <link href="https://fonts.googleapis.com/icon?family=Lucida+Grande" rel="stylesheet"> -->
 
 </head>
 <body ng-cloak>
-  <div ng-controller="pageCtrl">
 
-    <div ng-controller="calendarCtrl">
-      <div id="calendar"></div>
-    </div>
+  <md-content ng-controller="pageCtrl">
+    <md-tabs class="navigation-tabs" md-dynamic-height md-border-bottom>
 
-  </div>
+      <md-tab label="Calendar">
+        <md-content class="md-padding" ng-controller="calendarCtrl">
+          <md-button class="md-primary md-raised" ng-click="refreshEvents()">Refresh</md-button>
+          <md-button class="md-primary md-raised" ng-click="addEvent()">add</md-button>
 
-  <script type="text/javascript">
+          <md-button class="md-primary md-raised" ng-click="calendarGoPrev()">prev</md-button>
+          <md-button class="md-primary md-raised" ng-click="calendarGoNext()">next</md-button>
+          <md-button class="md-primary md-raised" ng-click="calendarGoToday()">today</md-button>
+
+          <span>{{calendarCurrentDate}}</span>
+
+          <div id="calendar" context-menu="menuOptions"></div>
+        </md-content>
+      </md-tab>
+
+      <md-tab label="Directions">
+        <md-content class="md-padding">
+          <p>3</p>
+        </md-content>
+      </md-tab>
+
+      <md-tab label="Contacts">
+        <md-content class="md-padding">
+          
+          <md-autocomplete flex
+              md-input-name="autocompleteField"
+              md-input-minlength="2"
+              md-input-maxlength="18"
+              md-no-cache="true"
+              md-selected-item="ctrl.selectedItem"
+              md-search-text="ctrl.searchText"
+              md-items="item in [1,2,3,4,5]"
+              xmd-items="item in ctrl.querySearch(ctrl.searchText)"
+              md-item-text="item"
+              md-min-length="0"
+              md-floating-label="Favorite state"
+              class="search-input">
+
+            <md-item-template>
+              <span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item}}</span>
+            </md-item-template>
+
+            <md-not-found>
+              No states matching "{{ctrl.searchText}}" were found.
+              <a ng-click="ctrl.newState(ctrl.searchText)">Create a new one!</a>
+            </md-not-found>
+
+          </md-autocomplete>
+
+
+        </md-content>
+      </md-tab>
+
+      <md-tab label="Settings">
+        <md-content class="md-padding">
+          <p>3</p>
+        </md-content>
+      </md-tab>
+
+    </md-tabs>
+  </md-content>
+
+  <script type="text/ng-template" id="event.tpl.html">
+    <md-dialog style="min-width:700px;" id="event-dialog">
+
+      <md-toolbar>
+        <div class="md-toolbar-tools">
+          <h2 ng-show="isNew">New event</h2>
+          <h2 ng-show="!isNew">Edit <b>{{ event.title }}</b> event</h2>
+          <span flex></span>
+          <md-button class="md-icon-button" ng-click="closeDialog()">
+            <md-icon>close</md-icon>
+          </md-button>
+        </div>
+      </md-toolbar>
+
+      <md-dialog-content>
+        <form ng-submit="$event.preventDefault()" name="eventForm">
+
+          <md-tabs md-dynamic-height md-border-bottom>
+
+            <!-- General -->
+            <md-tab label="General">
+              <md-content layout-padding>
+                <p>{{ event }}</p>
+
+                <!-- Title -->
+                <div layout="row">
+                  <md-input-container flex>
+                    <label>Title</label>
+                    <input required
+                      type="text"
+                      ng-model="event.title"
+                    />
+                    <div class="hint">Tell us what we should call you!</div>
+                  </md-input-container>
+                </div>
+
+                <!-- Date -->
+                <div layout="row">
+                  <md-datepicker flex
+                    ng-model="event.date"
+                    md-placeholder="Enter date"></md-datepicker>
+                </div>
+
+                <!-- Enabled -->
+                <div layout="row">
+                  <md-switch ng-model="event.enabled">
+                    <span ng-show="event.enabled">Enabled</span>
+                    <span ng-show="!event.enabled">Disabled</span>
+                  </md-switch>
+                </div>
+
+              </md-content>
+            </md-tab>
+
+            <!-- Directions -->
+            <md-tab label="Directions">
+              <md-content class="md-padding">
+                <h1 class="md-display-2">Tab Two</h1>
+                <p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie dictum. Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi. Cras eu fermentum nunc. Sed id ante eu orci commodo volutpat non ac est. Praesent ligula diam, congue eu enim scelerisque, finibus commodo lectus.</p>
+              </md-content>
+            </md-tab>
+
+            <md-tab label="three">
+              <md-content class="md-padding">
+                <h1 class="md-display-2">Tab Three</h1>
+                <p>Integer.</p>
+              </md-content>
+            </md-tab>
+
+          </md-tabs>
+
+        </form>
+      </md-dialog-content>
+
+      <md-dialog-actions>
+        <md-button ng-click="save()" class="md-raised md-primary">
+          <span ng-show="isNew">Add</span>
+          <span ng-show="!isNew">Update</span>
+        </md-button>
+
+        <md-button ng-click="confirmDelete()" class="md-raised md-warn" ng-show="!isNew">
+          Delete
+        </md-button>
+
+      </md-dialog-actions>
+    </md-dialog>
+  </script>
+
+  <!-- <script type="text/javascript">
     WebFontConfig = {
       google: { families: [ 'Lucida+Grande', 'HelveticaNeue', 'Helvetica+Neue', 'Open+Sans:400,300,500,600,700:latin,cyrillic', 'Raleway:400,100,200,300,500,700:latin', 'Poiret+One::latin,cyrillic', 'Yanone+Kaffeesatz:400,200,300:latin' ] }
     };
@@ -41,7 +187,7 @@
       wf.async = 'true';
       var s = document.getElementsByTagName('script')[0];
       s.parentNode.insertBefore(wf, s);
-    })(); </script>
+    })(); </script> -->
 
   <script src="/vendor/requirejs/require.js" data-main="/assets/main.js"></script>
 </body>
