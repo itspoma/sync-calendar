@@ -26,7 +26,7 @@
   <md-content ng-controller="pageCtrl">
     <md-tabs class="navigation-tabs" md-dynamic-height md-border-bottom>
 
-      <md-tab label="Calendar">
+      <md-tab label="Scheduler">
         <md-content class="md-padding" ng-controller="calendarCtrl">
           <md-button class="md-primary md-raised" ng-click="refreshEvents()">Refresh</md-button>
           <md-button class="md-primary md-raised" ng-click="addEvent()">add</md-button>
@@ -48,8 +48,11 @@
       </md-tab>
 
       <md-tab label="Contacts">
-        <md-content class="md-padding">
-          
+        <md-content class="md-padding" ng-controller="contactsCtrl as contacts">
+
+          <md-button class="md-primary md-raised" ng-click="contacts.refresh()">refresh</md-button>
+          <md-button id="add-contact-button" class="md-primary md-raised" ng-click="contacts.add()">add</md-button>
+
           <md-autocomplete flex
               md-input-name="autocompleteField"
               md-input-minlength="2"
@@ -75,6 +78,11 @@
 
           </md-autocomplete>
 
+          <div>
+            <div ng-repeat="contact in contacts.contacts">
+              <md-button ng-click="contacts.edit(contact.id)">{{ $index }} - {{ contact.name }}</md-button>
+            </div>
+          </div>
 
         </md-content>
       </md-tab>
@@ -88,13 +96,18 @@
     </md-tabs>
   </md-content>
 
+
+  <!-- Event Form  -->
+
   <script type="text/ng-template" id="event.tpl.html">
-    <md-dialog style="min-width:700px;" id="event-dialog">
+    <md-dialog style="min-width:700px;">
+    <form ng-submit="$event.preventDefault()" name="eventForm">
 
       <md-toolbar>
         <div class="md-toolbar-tools">
           <h2 ng-show="isNew">New event</h2>
           <h2 ng-show="!isNew">Edit <b>{{ event.title }}</b> event</h2>
+          
           <span flex></span>
           <md-button class="md-icon-button" ng-click="closeDialog()">
             <md-icon>close</md-icon>
@@ -103,67 +116,75 @@
       </md-toolbar>
 
       <md-dialog-content>
-        <form ng-submit="$event.preventDefault()" name="eventForm">
+        <md-tabs md-dynamic-height md-border-bottom>
 
-          <md-tabs md-dynamic-height md-border-bottom>
+          <!-- General -->
+          <md-tab label="General">
+            <md-content>
 
-            <!-- General -->
-            <md-tab label="General">
-              <md-content layout-padding>
-                <p>{{ event }}</p>
+              <!-- Title -->
+              <div layout="row" class="md-padding">
+                <md-input-container flex>
+                  <label>Title</label>
 
-                <!-- Title -->
-                <div layout="row">
-                  <md-input-container flex>
-                    <label>Title</label>
-                    <input required
-                      type="text"
-                      ng-model="event.title"
-                    />
-                    <div class="hint">Tell us what we should call you!</div>
-                  </md-input-container>
-                </div>
+                  <input
+                    required
+                    type="text"
+                    ng-model="event.title"
+                    md-autofocus
+                  />
 
-                <!-- Date -->
-                <div layout="row">
-                  <md-datepicker flex
-                    ng-model="event.date"
-                    md-placeholder="Enter date"></md-datepicker>
-                </div>
+                  <div class="hint">Tell us what we should call you!</div>
+                </md-input-container>
+              </div>
 
-                <!-- Enabled -->
-                <div layout="row">
-                  <md-switch ng-model="event.enabled">
-                    <span ng-show="event.enabled">Enabled</span>
-                    <span ng-show="!event.enabled">Disabled</span>
-                  </md-switch>
-                </div>
+              <!-- Date -->
+              <div layout="row" class="md-padding">
+                <md-datepicker flex
+                  required
+                  ng-model="event.date"
+                  md-placeholder="Enter date"></md-datepicker>
+              </div>
 
-              </md-content>
-            </md-tab>
+              <!-- Enabled -->
+              <div layout="row" class="md-padding">
+                <md-switch ng-model="event.enabled">
+                  <span ng-show="event.enabled">Enabled</span>
+                  <span ng-show="!event.enabled">Disabled</span>
+                </md-switch>
+              </div>
 
-            <!-- Directions -->
-            <md-tab label="Directions">
-              <md-content class="md-padding">
-                <h1 class="md-display-2">Tab Two</h1>
-                <p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie dictum. Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi. Cras eu fermentum nunc. Sed id ante eu orci commodo volutpat non ac est. Praesent ligula diam, congue eu enim scelerisque, finibus commodo lectus.</p>
-              </md-content>
-            </md-tab>
+            </md-content>
+          </md-tab>
 
-            <md-tab label="three">
-              <md-content class="md-padding">
-                <h1 class="md-display-2">Tab Three</h1>
-                <p>Integer.</p>
-              </md-content>
-            </md-tab>
+          <!-- Directions -->
+          <md-tab label="Directions">
+            <md-content class="md-padding">
+              <h1 class="md-display-2">Tab Two</h1>
+              <p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie dictum. Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi. Cras eu fermentum nunc. Sed id ante eu orci commodo volutpat non ac est. Praesent ligula diam, congue eu enim scelerisque, finibus commodo lectus.</p>
+            </md-content>
+          </md-tab>
 
-          </md-tabs>
+          <md-tab label="three">
+            <md-content class="md-padding">
+              <h1 class="md-display-2">Tab Three</h1>
+              <p>Integer.</p>
+            </md-content>
+          </md-tab>
 
-        </form>
+        </md-tabs>
       </md-dialog-content>
 
       <md-dialog-actions>
-        <md-button ng-click="save()" class="md-raised md-primary">
+        <md-button ng-click="closeDialog()">
+          Cancel
+        </md-button>
+
+        <md-button
+          ng-click="save()"
+          ng-disabled="!eventForm.$valid"
+          class="md-raised md-primary"
+        >
           <span ng-show="isNew">Add</span>
           <span ng-show="!isNew">Update</span>
         </md-button>
@@ -173,6 +194,80 @@
         </md-button>
 
       </md-dialog-actions>
+
+    </form>
+    </md-dialog>
+  </script>
+
+  
+  <!-- Contact Form  -->
+
+  <script type="text/ng-template" id="contact.tpl.html">
+    <md-dialog style="min-width:700px;">
+    <form ng-submit="$event.preventDefault()" name="contactForm">
+
+      <md-toolbar>
+        <div class="md-toolbar-tools">
+          <h2 ng-show="isNew">New contact</h2>
+          <h2 ng-show="!isNew">Edit <b>{{ contact.title }}</b> contact</h2>
+          
+          <span flex></span>
+          <md-button class="md-icon-button" ng-click="closeDialog()">
+            <md-icon>close</md-icon>
+          </md-button>
+        </div>
+      </md-toolbar>
+
+      <md-dialog-content>
+        <md-tabs md-dynamic-height md-border-bottom>
+
+          <!-- General -->
+          <md-tab label="General">
+            <md-content>
+
+              <!-- Name -->
+              <div layout="row" class="md-padding">
+                <md-input-container flex>
+                  <label>Name</label>
+
+                  <input
+                    required
+                    type="text"
+                    ng-model="contact.name"
+                    md-autofocus
+                  />
+
+                  <div class="hint">Tell us what we should call you!</div>
+                </md-input-container>
+              </div>
+
+            </md-content>
+          </md-tab>
+
+        </md-tabs>
+      </md-dialog-content>
+
+      <md-dialog-actions>
+        <md-button ng-click="closeDialog()">
+          Cancel
+        </md-button>
+
+        <md-button
+          ng-click="contactDialog.save()"
+          ng-disabled="!contactForm.$valid"
+          class="md-raised md-primary"
+        >
+          <span ng-show="isNew">Add</span>
+          <span ng-show="!isNew">Update</span>
+        </md-button>
+
+        <md-button ng-click="contactDialog.confirmDelete()" class="md-raised md-warn" ng-show="!isNew">
+          Delete
+        </md-button>
+
+      </md-dialog-actions>
+
+    </form>
     </md-dialog>
   </script>
 

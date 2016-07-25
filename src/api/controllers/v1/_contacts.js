@@ -1,42 +1,41 @@
 'use strict';
 
 var router = require('express').Router({mergeParams: true})
-  , EventModel = require('../../models').event.model
+  , ContactModel = require('../../models').contact.model
   , _ = require('underscore')
   , moment = require('moment');
 
 // 
 router.route('/')
 
-  // Get list of events
+  // Get list of contacts
   // 
   // @method GET
-  // @return events
+  // @return contacts
   .get(function(req, res, next) {
-    return EventModel.find({}, function (err, events) {
+    return ContactModel.find({}, function (err, contacts) {
       if (err) return next(err);
 
       res.data = {
-        'events': events
+        'contacts': contacts
       };
 
       next();
     });
   })
 
-  // Create new event
+  // Create new contact
   // 
   // @method POST
-  // @return event
+  // @return contact
   .post(function(req, res, next) {
-    var event = new EventModel;
-    event.enabled = req.body.enabled;
-    event.title = req.body.title;
-    event.date = req.body.date;
+    var contact = new ContactModel;
+    contact.enabled = req.body.enabled;
+    contact.name = req.body.name;
 
-    event.save().then(function (doc) {
+    contact.save().then(function (doc) {
       res.data = {
-        'event': doc
+        'contact': doc
       };
       
       next();

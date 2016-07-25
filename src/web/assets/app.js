@@ -3,6 +3,7 @@ define([
   'angular',
   'moment',
   'components/calendar/calendarController',
+  'components/contacts/contactsController',
   'ngMaterial',
   'ngResource',
   'fullcalendar',
@@ -21,6 +22,7 @@ define([
     'angular-loading-bar',
     'ngAnimate',
     'calendar',
+    'contacts',
   ]);
 
   // config
@@ -56,6 +58,15 @@ define([
   angular.module('app').factory('Events', function($resource) {
     return $resource('http://127.0.0.1:3000/api/v1/events/:eventId', {
       eventId: '@id'
+    }, {
+      'query': { method: 'GET', isArray: false },
+      'update': { method:'PUT' }
+    });
+  });
+
+  angular.module('app').factory('Contacts', function($resource) {
+    return $resource('http://127.0.0.1:3000/api/v1/contacts/:contactId', {
+      contactId: '@id'
     }, {
       'query': { method: 'GET', isArray: false },
       'update': { method:'PUT' }

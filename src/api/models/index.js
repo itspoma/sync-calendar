@@ -1,3 +1,4 @@
 module.exports = {
-  event: require('./event')()
+  event: require('./event')(),
+  contact: require('./contact')(),
 };
