@@ -56,9 +56,8 @@ define(['angular', 'moment', 'underscore'], function (ng, moment, _) {
 
           $scope.confirmDelete = function () {
             var confirm = $mdDialog.confirm()
-              .parent(angular.element(document.querySelector('#calendar')))
+              .parent(angular.element(document.body))
               .title('Are you sure you want to delete the "' + $scope.event.title + '" event?')
-              // .textContent('')
               .ok('Yes, delete')
               .cancel('No, keep this event');
 

@@ -16,8 +16,10 @@ define(['angular', 'underscore'], function (ng, _) {
         templateUrl: 'contact.tpl.html',
         clickOutsideToClose: false,
         clickEscapeToClose: true,
-        controllerAs: 'contactDialog',
+        controllerAs: 'dialog',
         controller: function DialogController($scope, $mdDialog) {
+          var dialog = this;
+
           var contact = _.extend({
             name: '',
           }, data);
@@ -25,11 +27,11 @@ define(['angular', 'underscore'], function (ng, _) {
           $scope.contact = contact;
           $scope.isNew = typeof contact.id == 'undefined';
 
-          $scope.closeDialog = function() {
+          dialog.close = function() {
             $mdDialog.hide();
           }
 
-          $scope.save = function () {
+          dialog.save = function () {
             var contact = new Contacts({});
 
             contact.id = $scope.contact.id;
@@ -37,27 +39,26 @@ define(['angular', 'underscore'], function (ng, _) {
             contact.name = $scope.contact.name;
 
             contact[$scope.isNew ? '$save' : '$update'](function () {
-              $scope.closeDialog();
+              dialog.close();
               that.refresh();
             });
           }
 
-          this.confirmDelete = function () {
+          dialog.confirmDelete = function () {
             var confirm = $mdDialog.confirm()
-              .parent(angular.element(document.querySelector('#calendar')))
+              .parent(angular.element(document.body))
               .title('Are you sure you want to delete the "' + $scope.contact.name + '" contact?')
               .ok('Yes, delete')
               .cancel('No, keep this contact');
 
             $mdDialog.show(confirm).then(function() {
-              // this.delete();
-              alert(1);
+              dialog.delete();
             });
           }
 
-          this.delete = function () {
+          dialog.delete = function () {
             Contacts.delete({contactId: $scope.contact.id}, function (contact) {
-              $scope.closeDialog();
+              dialog.close();
               that.refresh();
             });
           }
