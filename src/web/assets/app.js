@@ -8,6 +8,7 @@ define([
   'ngResource',
   'fullcalendar',
   'ngLoadingBar',
+  'ngLetterAvatar',
   // 'ngContextMenu'
 ], function (
   $, angular, moment
@@ -21,6 +22,7 @@ define([
     // 'ui.bootstrap.contextMenu',
     'angular-loading-bar',
     'ngAnimate',
+    'ngLetterAvatar',
     'calendar',
     'contacts',
   ]);
@@ -53,6 +55,48 @@ define([
     //     // $scope.items.splice($itemScope.$index, 1);
     //   }]
     // ];
+  });
+
+  angular.module('app').directive('myUserAvatar', function () {
+    var configsMap = {
+      'default': {
+        charCount: '2',
+        height: '30',
+        width: '30',
+        fontWeight: '100',
+        fontSize: '13',
+        avatarBorder: 'false',
+        shape: 'round'
+      },
+      'test': {
+        fontSize: '10'
+      }
+    };
+
+    return {
+      restrict: 'E',
+      scope: {
+        config: '=config',
+        data: '=data'
+      },
+      template: function (elem, attrs) {
+        var config = $.extend({},
+          configsMap['default'],
+          configsMap[attrs.config] || {}
+        );
+
+        return '<ng-letter-avatar ' +
+          ' data="{{ data }}" ' +
+          ' shape="' + config.shape + '" ' +
+          ' charCount="' + config.charCount + '" ' +
+          ' avatarborder="' + config.avatarBorder + '" ' +
+          ' height="' + config.height + '" ' +
+          ' width="' + config.width + '" ' +
+          ' fontWeight="' + config.fontWeight + '" ' +
+          ' fontsize="' + config.fontSize + '"' + 
+          '></ng-letter-avatar>';
+      }
+    };
   });
 
   angular.module('app').factory('Events', function($resource) {

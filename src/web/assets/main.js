@@ -21,6 +21,7 @@ require.config({
     'ngMaterial': '/vendor/angular-material/angular-material.min',
     'ngContextMenu': '/vendor/angular-bootstrap-contextmenu/contextMenu',
     'ngLoadingBar': '/vendor/angular-loading-bar/build/loading-bar',
+    'ngLetterAvatar': '/vendor/ng-letter-avatar/dist/ngletteravatar.min',
   },
 
   shim: {
@@ -47,7 +48,8 @@ require.config({
     'ngResource': ['angular'],
     'ngAnimate': ['angular'],
     'ngLoadingBar': ['ngAnimate'],
-    'ngMaterial': ['angular', 'ngAria', 'ngAnimate']
+    'ngMaterial': ['angular', 'ngAria', 'ngAnimate'],
+    'ngLetterAvatar': ['angular']
   },
 
   priority: ['angular']

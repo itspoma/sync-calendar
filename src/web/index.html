@@ -80,6 +80,7 @@
 
           <div>
             <div ng-repeat="contact in contacts.contacts">
+              <my-user-avatar data="contact.name"></my-user-avatar>
               <md-button ng-click="contacts.edit(contact.id)">{{ $index }} - {{ contact.name }}</md-button>
             </div>
           </div>
